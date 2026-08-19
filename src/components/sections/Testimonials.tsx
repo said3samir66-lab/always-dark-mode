@@ -270,7 +270,7 @@ export function Testimonials() {
           <AnimatePresence mode="wait" custom={dir} initial={false}>
             <motion.div
               key={activeIdx}
-              className="lg:col-span-8 grid min-w-0 grid-cols-1 md:grid-cols-2 md:grid-rows-2 gap-5 sm:gap-6 lg:gap-8 items-stretch touch-pan-y"
+              className="lg:col-span-8 grid min-w-0 grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6 lg:gap-8 items-stretch touch-pan-y"
               initial={reduce ? { opacity: 0 } : { opacity: 0, x: enterX }}
               animate={{ opacity: 1, x: 0 }}
               exit={reduce ? { opacity: 0 } : { opacity: 0, x: -enterX }}
@@ -285,32 +285,31 @@ export function Testimonials() {
                 else if (info.offset.x > 70) (isRTL ? next : prev)();
               }}
             >
-              {/* Featured card spans the full width of the top row */}
+              {/* Featured card */}
               {featured && (
-                <div className="md:col-span-2 h-full">
-                  <FeaturedCard
-                    item={featured}
-                    lang={lang}
-                    reduce={!!reduce}
-                    open={openId === featured.id}
-                    onToggle={() => setOpenId((o) => (o === featured.id ? null : featured.id))}
-                    detailsLabel={tr("awards.learnMore")}
-                    index={0}
-                  />
-                </div>
+                <FeaturedCard
+                  item={featured}
+                  lang={lang}
+                  reduce={!!reduce}
+                  open={openId === featured.id}
+                  onToggle={() => setOpenId((o) => (o === featured.id ? null : featured.id))}
+                  detailsLabel={tr("awards.learnMore")}
+                  index={0}
+                />
               )}
 
-              {/* Side cards share the bottom row, each equal height */}
-              {side.map((item, i) => (
-                <div key={item.id} className="h-full">
+              {/* Side cards */}
+              <div className="grid min-w-0 grid-cols-1 sm:grid-cols-2 md:grid-cols-1 gap-5 sm:gap-6 auto-rows-fr">
+                {side.map((item, i) => (
                   <SideCard
+                    key={item.id}
                     item={item}
                     lang={lang}
                     reduce={!!reduce}
                     index={i + 1}
                   />
-                </div>
-              ))}
+                ))}
+              </div>
             </motion.div>
 
           </AnimatePresence>
