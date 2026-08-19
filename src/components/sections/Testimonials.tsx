@@ -93,184 +93,83 @@ export function Testimonials() {
       }}
     >
       <div className="mx-auto max-w-6xl">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 lg:items-stretch">
-          {/* Left Column: Title & Controls */}
-          <div className="lg:col-span-4 flex min-w-0 flex-col justify-between gap-8 h-full">
-
-            <motion.div
-              initial={reduce ? {} : { opacity: 0, y: 24 }}
-              whileInView={reduce ? {} : { opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.4 }}
-              transition={{ duration: 0.6, ease: EASE }}
-            >
-              <div className="flex items-end gap-3 mb-4">
-                <span className="font-sans text-xs font-black tracking-[0.2em] text-foreground/60 uppercase pb-3">
-                  No
+        <div className="grid grid-cols-1 lg:grid-cols-12 lg:grid-rows-[auto_1fr_auto] gap-8 lg:gap-10 lg:items-stretch">
+          {/* Row 1, col 1-4: Title + counter + meta */}
+          <motion.div
+            className="lg:col-span-4 flex min-w-0 flex-col gap-6"
+            initial={reduce ? {} : { opacity: 0, y: 24 }}
+            whileInView={reduce ? {} : { opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.4 }}
+            transition={{ duration: 0.6, ease: EASE }}
+          >
+            <div className="flex items-end gap-3">
+              <span className="font-sans text-xs font-black tracking-[0.2em] text-foreground/60 uppercase pb-3">
+                No
+              </span>
+              <span className="relative inline-block h-[4.5rem] overflow-hidden leading-none font-['Oswald',sans-serif] text-[4.5rem] font-bold">
+                {/* Invisible sizer keeps the animated digits from being clipped */}
+                <span className="invisible block leading-none" aria-hidden="true">
+                  {String(total).padStart(2, "0")}
                 </span>
-                <span className="relative inline-block h-[4.5rem] overflow-hidden leading-none font-['Oswald',sans-serif] text-[4.5rem] font-bold">
-                  {/* Invisible sizer keeps the animated digits from being clipped */}
-                  <span className="invisible block leading-none" aria-hidden="true">
-                    {String(total).padStart(2, "0")}
-                  </span>
-                  <AnimatePresence mode="popLayout" initial={false}>
-                    <motion.span
-                      key={activeIdx}
-                      initial={reduce ? {} : { y: 40, opacity: 0 }}
-                      animate={{ y: 0, opacity: 1 }}
-                      exit={reduce ? {} : { y: -40, opacity: 0 }}
-                      transition={{ duration: 0.35, ease: EASE }}
-                      className="absolute inset-0 flex items-center justify-center text-primary leading-none"
-                    >
-                      {String(activeIdx + 1).padStart(2, "0")}
-                    </motion.span>
-                  </AnimatePresence>
-                </span>
-                <span className="font-['Oswald',sans-serif] text-2xl font-bold text-foreground/40 pb-2">
-                  /{String(total).padStart(2, "0")}
-                </span>
-              </div>
-              <h2 className="font-['Oswald',sans-serif] text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground leading-[1.05] text-balance mb-6">
-                {tr("awards.title1")}
-                <br />
-                {tr("awards.title2")}
-              </h2>
-
-              {/* Slide meta */}
-              <AnimatePresence mode="wait" initial={false}>
-                <motion.div
-                  key={activeIdx}
-                  initial={reduce ? { opacity: 0 } : { opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={reduce ? { opacity: 0 } : { opacity: 0, y: -10 }}
-                  transition={{ duration: 0.3, ease: EASE }}
-                  className="mb-8 space-y-3"
-                >
-                  <div className="flex flex-wrap gap-2">
-                    {slide.map((item) => (
-                      <span
-                        key={item.id}
-                        className="rounded-full border border-border bg-foreground/5 px-3 py-1 font-sans text-[10px] font-black uppercase tracking-widest text-foreground/70"
-                      >
-                        {item.year}
-                      </span>
-                    ))}
-                  </div>
-                  <p className="font-sans text-xs leading-relaxed text-foreground/60">
-                    {slide.map((i) => i.org[lang]).join(" · ")}
-                  </p>
-                  <p className="font-sans text-[10px] font-black uppercase tracking-[0.2em] text-foreground/45">
-                    {slide.length} {tr("awards.itemsLabel")}
-                  </p>
-                </motion.div>
-              </AnimatePresence>
-
-              {/* Slide visual: animated credential marks (education / certification /
-                  award). All frames stay mounted and cross-fade with transform+opacity
-                  only. Each Lottie is lazily fetched near the viewport, pauses offscreen
-                  and falls back to the static still under reduced motion. */}
-              <div className="mb-8 relative w-full overflow-hidden rounded-2xl border border-border bg-foreground/5 [contain:paint]">
-                <div className="relative aspect-[4/5] w-full">
-                  {SLIDE_VISUALS.map((visual, i) => {
-                    const isActive = i === activeIdx % SLIDE_VISUALS.length;
-                    const offset = reduce ? 0 : dir * 56;
-                    return (
-                      <motion.div
-                        key={visual.lottie}
-                        aria-hidden={!isActive}
-                        initial={false}
-                        animate={
-                          isActive
-                            ? { opacity: 1, x: 0, scale: 1 }
-                            : { opacity: 0, x: -offset, scale: 0.985 }
-                        }
-                        transition={
-                          reduce
-                            ? { duration: 0.2 }
-                            : {
-                                x: { type: "spring", stiffness: 480, damping: 44, mass: 0.55 },
-                                opacity: { duration: 0.28, ease: EASE },
-                                scale: { duration: 0.32, ease: EASE },
-                              }
-                        }
-                        style={{ zIndex: isActive ? 1 : 0, willChange: "transform, opacity" }}
-                        className="absolute inset-0 grid size-full place-items-center p-0 [backface-visibility:hidden] [transform:translateZ(0)]"
-                      >
-                        <LottieIcon
-                          src={visual.lottie}
-                          eager={i === 0}
-                          className="w-full h-full scale-110"
-                          fallback={
-                            <img
-                              src={visual.still}
-                              alt=""
-                              width={640}
-                              height={800}
-                              draggable={false}
-                              loading={i === 0 ? "eager" : "lazy"}
-                              decoding="async"
-                              className="size-full object-contain"
-                            />
-                          }
-                        />
-                      </motion.div>
-                    );
-                  })}
-                </div>
-              </div>
-
-
-
-            </motion.div>
-
-            <div className="flex items-center gap-3">
-              <motion.button
-                onClick={prev}
-                whileTap={reduce ? {} : { scale: 0.9 }}
-                whileHover={reduce ? {} : { y: -2 }}
-                className="grid size-11 place-items-center rounded-xl bg-foreground/10 border border-border text-foreground hover:bg-foreground/20 transition-colors"
-                aria-label={tr("awards.prev")}
-              >
-                <ChevronLeft className="size-5 rtl:rotate-180" />
-              </motion.button>
-              <motion.button
-                onClick={next}
-                whileTap={reduce ? {} : { scale: 0.9 }}
-                whileHover={reduce ? {} : { y: -2 }}
-                className="grid size-11 place-items-center rounded-xl bg-foreground/10 border border-border text-foreground hover:bg-foreground/20 transition-colors"
-                aria-label={tr("awards.next")}
-              >
-                <ChevronRight className="size-5 rtl:rotate-180" />
-              </motion.button>
-
-              {/* Progress dots */}
-              <div className="flex items-center gap-2 ms-3">
-                {slides.map((_, i) => (
-                  <button
-                    key={i}
-                    onClick={() => go(i, i > activeIdx ? 1 : -1)}
-                    aria-label={`${i + 1}/${total}`}
-                    aria-current={i === activeIdx}
-                    className="relative h-1.5 rounded-full bg-foreground/20 overflow-hidden transition-all"
-                    style={{ width: i === activeIdx ? 32 : 12 }}
+                <AnimatePresence mode="popLayout" initial={false}>
+                  <motion.span
+                    key={activeIdx}
+                    initial={reduce ? {} : { y: 40, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    exit={reduce ? {} : { y: -40, opacity: 0 }}
+                    transition={{ duration: 0.35, ease: EASE }}
+                    className="absolute inset-0 flex items-center justify-center text-primary leading-none"
                   >
-                    {i === activeIdx && (
-                      <motion.span
-                        layoutId="award-dot"
-                        className="absolute inset-0 rounded-full bg-primary"
-                        transition={{ duration: 0.4, ease: EASE }}
-                      />
-                    )}
-                  </button>
-                ))}
-              </div>
+                    {String(activeIdx + 1).padStart(2, "0")}
+                  </motion.span>
+                </AnimatePresence>
+              </span>
+              <span className="font-['Oswald',sans-serif] text-2xl font-bold text-foreground/40 pb-2">
+                /{String(total).padStart(2, "0")}
+              </span>
             </div>
-          </div>
 
-          {/* Slide content */}
+            <h2 className="font-['Oswald',sans-serif] text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground leading-[1.05] text-balance">
+              {tr("awards.title1")}
+              <br />
+              {tr("awards.title2")}
+            </h2>
+
+            {/* Slide meta */}
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.div
+                key={activeIdx}
+                initial={reduce ? { opacity: 0 } : { opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={reduce ? { opacity: 0 } : { opacity: 0, y: -10 }}
+                transition={{ duration: 0.3, ease: EASE }}
+                className="space-y-3"
+              >
+                <div className="flex flex-wrap gap-2">
+                  {slide.map((item) => (
+                    <span
+                      key={item.id}
+                      className="rounded-full border border-border bg-foreground/5 px-3 py-1 font-sans text-[10px] font-black uppercase tracking-widest text-foreground/70"
+                    >
+                      {item.year}
+                    </span>
+                  ))}
+                </div>
+                <p className="font-sans text-xs leading-relaxed text-foreground/60">
+                  {slide.map((i) => i.org[lang]).join(" · ")}
+                </p>
+                <p className="font-sans text-[10px] font-black uppercase tracking-[0.2em] text-foreground/45">
+                  {slide.length} {tr("awards.itemsLabel")}
+                </p>
+              </motion.div>
+            </AnimatePresence>
+          </motion.div>
+
+          {/* Row 2-3, col 5-12: Cards start after the title text */}
           <AnimatePresence mode="wait" custom={dir} initial={false}>
             <motion.div
               key={activeIdx}
-              className="lg:col-span-8 grid min-w-0 grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6 lg:gap-8 items-stretch touch-pan-y"
+              className="lg:col-span-8 lg:row-span-2 h-full grid min-w-0 grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6 lg:gap-8 items-stretch touch-pan-y"
               initial={reduce ? { opacity: 0 } : { opacity: 0, x: enterX }}
               animate={{ opacity: 1, x: 0 }}
               exit={reduce ? { opacity: 0 } : { opacity: 0, x: -enterX }}
@@ -311,8 +210,102 @@ export function Testimonials() {
                 ))}
               </div>
             </motion.div>
-
           </AnimatePresence>
+
+          {/* Row 2, col 1-4: Lottie visual */}
+          <div className="lg:col-span-4 relative w-full overflow-hidden rounded-2xl border border-border bg-foreground/5 [contain:paint]">
+            <div className="relative aspect-[4/5] w-full">
+              {SLIDE_VISUALS.map((visual, i) => {
+                const isActive = i === activeIdx % SLIDE_VISUALS.length;
+                const offset = reduce ? 0 : dir * 56;
+                return (
+                  <motion.div
+                    key={visual.lottie}
+                    aria-hidden={!isActive}
+                    initial={false}
+                    animate={
+                      isActive
+                        ? { opacity: 1, x: 0, scale: 1 }
+                        : { opacity: 0, x: -offset, scale: 0.985 }
+                    }
+                    transition={
+                      reduce
+                        ? { duration: 0.2 }
+                        : {
+                            x: { type: "spring", stiffness: 480, damping: 44, mass: 0.55 },
+                            opacity: { duration: 0.28, ease: EASE },
+                            scale: { duration: 0.32, ease: EASE },
+                          }
+                    }
+                    style={{ zIndex: isActive ? 1 : 0, willChange: "transform, opacity" }}
+                    className="absolute inset-0 grid size-full place-items-center p-0 [backface-visibility:hidden] [transform:translateZ(0)]"
+                  >
+                    <LottieIcon
+                      src={visual.lottie}
+                      eager={i === 0}
+                      className="w-full h-full scale-110"
+                      fallback={
+                        <img
+                          src={visual.still}
+                          alt=""
+                          width={640}
+                          height={800}
+                          draggable={false}
+                          loading={i === 0 ? "eager" : "lazy"}
+                          decoding="async"
+                          className="size-full object-contain"
+                        />
+                      }
+                    />
+                  </motion.div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Row 3, col 1-4: Controls */}
+          <div className="lg:col-span-4 flex items-center gap-3">
+            <motion.button
+              onClick={prev}
+              whileTap={reduce ? {} : { scale: 0.9 }}
+              whileHover={reduce ? {} : { y: -2 }}
+              className="grid size-11 place-items-center rounded-xl bg-foreground/10 border border-border text-foreground hover:bg-foreground/20 transition-colors"
+              aria-label={tr("awards.prev")}
+            >
+              <ChevronLeft className="size-5 rtl:rotate-180" />
+            </motion.button>
+            <motion.button
+              onClick={next}
+              whileTap={reduce ? {} : { scale: 0.9 }}
+              whileHover={reduce ? {} : { y: -2 }}
+              className="grid size-11 place-items-center rounded-xl bg-foreground/10 border border-border text-foreground hover:bg-foreground/20 transition-colors"
+              aria-label={tr("awards.next")}
+            >
+              <ChevronRight className="size-5 rtl:rotate-180" />
+            </motion.button>
+
+            {/* Progress dots */}
+            <div className="flex items-center gap-2 ms-3">
+              {slides.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => go(i, i > activeIdx ? 1 : -1)}
+                  aria-label={`${i + 1}/${total}`}
+                  aria-current={i === activeIdx}
+                  className="relative h-1.5 rounded-full bg-foreground/20 overflow-hidden transition-all"
+                  style={{ width: i === activeIdx ? 32 : 12 }}
+                >
+                  {i === activeIdx && (
+                    <motion.span
+                      layoutId="award-dot"
+                      className="absolute inset-0 rounded-full bg-primary"
+                      transition={{ duration: 0.4, ease: EASE }}
+                    />
+                  )}
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -480,4 +473,3 @@ function SideCard({
     </motion.div>
   );
 }
-
