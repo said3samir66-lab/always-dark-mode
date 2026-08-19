@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useI18n } from "@/lib/i18n";
 import { credentials, type CredentialItem } from "@/data";
+import { LottieIcon } from "@/components/ui/LottieIcon";
 import {
   ChevronLeft,
   ChevronRight,
@@ -19,7 +20,11 @@ import cred1 from "@/assets/cred-1.avif";
 import cred2 from "@/assets/cred-2.avif";
 import cred3 from "@/assets/cred-3.avif";
 
-const SLIDE_IMAGES = [cred1, cred2, cred3];
+const SLIDE_VISUALS = [
+  { lottie: "/lottie/cred-education.lottie", still: cred1 },
+  { lottie: "/lottie/cred-certification.lottie", still: cred2 },
+  { lottie: "/lottie/cred-award.lottie", still: cred3 },
+] as const;
 const ICONS = [Award, Compass, ShieldCheck, Rocket, Database, Container, Languages];
 const EASE = [0.22, 1, 0.36, 1] as const;
 const AUTOPLAY_MS = 7000;
@@ -159,25 +164,19 @@ export function Testimonials() {
                 </motion.div>
               </AnimatePresence>
 
-              {/* Slide visual: all frames stay mounted (decoded once) and cross-fade
-                  with transform+opacity only — no unmount, no blur filter, no jank. */}
+              {/* Slide visual: animated credential marks (education / certification /
+                  award). All frames stay mounted and cross-fade with transform+opacity
+                  only. Each Lottie is lazily fetched near the viewport, pauses offscreen
+                  and falls back to the static still under reduced motion. */}
               <div className="mb-8 relative w-full max-w-[11rem] sm:max-w-[13rem] lg:max-w-[15rem] overflow-hidden rounded-2xl border border-border bg-foreground/5 [contain:paint]">
                 <div className="relative aspect-[4/5] w-full">
-                  {SLIDE_IMAGES.map((src, i) => {
-                    const isActive = i === activeIdx % SLIDE_IMAGES.length;
+                  {SLIDE_VISUALS.map((visual, i) => {
+                    const isActive = i === activeIdx % SLIDE_VISUALS.length;
                     const offset = reduce ? 0 : dir * 56;
                     return (
-                      <motion.img
-                        key={src}
-                        src={src}
-                        alt={isActive ? (slide[0]?.title[lang] ?? "") : ""}
+                      <motion.div
+                        key={visual.lottie}
                         aria-hidden={!isActive}
-                        width={640}
-                        height={800}
-                        draggable={false}
-                        loading={i === 0 ? "eager" : "lazy"}
-                        decoding="async"
-                        fetchPriority={i === 0 ? "high" : "low"}
                         initial={false}
                         animate={
                           isActive
@@ -194,12 +193,31 @@ export function Testimonials() {
                               }
                         }
                         style={{ zIndex: isActive ? 1 : 0, willChange: "transform, opacity" }}
-                        className="absolute inset-0 size-full object-cover [backface-visibility:hidden] [transform:translateZ(0)]"
-                      />
+                        className="absolute inset-0 grid size-full place-items-center p-5 [backface-visibility:hidden] [transform:translateZ(0)]"
+                      >
+                        <LottieIcon
+                          src={visual.lottie}
+                          eager={i === 0}
+                          className="size-full max-h-full"
+                          fallback={
+                            <img
+                              src={visual.still}
+                              alt=""
+                              width={640}
+                              height={800}
+                              draggable={false}
+                              loading={i === 0 ? "eager" : "lazy"}
+                              decoding="async"
+                              className="size-full object-contain"
+                            />
+                          }
+                        />
+                      </motion.div>
                     );
                   })}
                 </div>
               </div>
+
 
 
             </motion.div>

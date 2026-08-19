@@ -9,7 +9,11 @@ import { prefetchLottie } from "@/lib/lottie-cache";
  * `lottie-cache`, so warming is free if the asset was seen before.
  */
 export const ROUTE_LOTTIE: Record<string, readonly string[]> = {
-  "/": [],
+  "/": [
+    "/lottie/cred-education.lottie",
+    "/lottie/cred-certification.lottie",
+    "/lottie/cred-award.lottie",
+  ],
   "/about": ["/lottie/about-side.lottie"],
   "/skills": ["/lottie/skills-side.lottie"],
   "/experience": ["/lottie/experience-side.lottie"],
