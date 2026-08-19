@@ -169,7 +169,7 @@ export function Testimonials() {
           <AnimatePresence mode="wait" custom={dir} initial={false}>
             <motion.div
               key={activeIdx}
-              className="lg:col-span-8 lg:row-span-2 h-full grid min-w-0 grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6 lg:gap-8 items-stretch touch-pan-y"
+              className="lg:col-span-8 lg:row-span-2 lg:self-start grid min-w-0 grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6 lg:gap-8 items-stretch touch-pan-y"
               initial={reduce ? { opacity: 0 } : { opacity: 0, x: enterX }}
               animate={{ opacity: 1, x: 0 }}
               exit={reduce ? { opacity: 0 } : { opacity: 0, x: -enterX }}
@@ -213,8 +213,8 @@ export function Testimonials() {
           </AnimatePresence>
 
           {/* Row 2, col 1-4: Lottie visual */}
-          <div className="lg:col-span-4 relative w-full overflow-hidden rounded-2xl border border-border bg-foreground/5 [contain:paint]">
-            <div className="relative aspect-[4/5] w-full">
+          <div className="lg:col-span-4 lg:self-start relative w-full overflow-hidden rounded-2xl border border-border bg-foreground/5 [contain:paint]">
+            <div className="relative aspect-[4/5] lg:aspect-[5/4] w-full">
               {SLIDE_VISUALS.map((visual, i) => {
                 const isActive = i === activeIdx % SLIDE_VISUALS.length;
                 const offset = reduce ? 0 : dir * 56;
