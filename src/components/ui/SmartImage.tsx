@@ -64,7 +64,11 @@ export function SmartImage({
       />
 
       {resolved && status !== "error" && (
-        <img
+        <picture>
+          {resolved.avifSrcSet && (
+            <source type="image/avif" srcSet={resolved.avifSrcSet} sizes={sizes} />
+          )}
+          <img
           ref={imgRef}
           src={resolved.src}
           srcSet={resolved.srcSet}
@@ -83,7 +87,8 @@ export function SmartImage({
             status === "ready" ? "opacity-100" : "opacity-0",
             imgClassName,
           )}
-        />
+          />
+        </picture>
       )}
     </div>
   );

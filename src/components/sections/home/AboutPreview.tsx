@@ -1,6 +1,7 @@
 import { ArrowRight } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import portraitAsset from "@/assets/portrait-cutout.png.asset.json";
+import portraitAvif from "@/assets/portrait-cutout.avif";
 import { PenTyping } from "@/components/ui/PenTyping";
 
 export function AboutPreview() {
@@ -70,14 +71,17 @@ export function AboutPreview() {
             <div className="lg:col-span-6">
               <div className="relative mx-auto flex w-full max-w-sm sm:max-w-md items-end justify-center overflow-hidden rounded-2xl border border-border bg-gradient-to-b from-primary/20 via-background to-background shadow-[0_25px_60px_rgba(0,0,0,0.45)]">
                 <div className="pointer-events-none absolute inset-x-6 bottom-0 h-1/2 bg-gradient-to-t from-background to-transparent" />
-                <img
+                <picture>
+                  <source type="image/avif" srcSet={portraitAvif} />
+                  <img
                   src={portraitAsset.url}
                   alt="Portrait of Mostafa Samir"
                   width={861}
                   height={768}
                   loading="lazy"
                   className="relative z-10 w-full object-contain drop-shadow-[0_20px_40px_rgba(0,0,0,0.45)]"
-                />
+                  />
+                </picture>
               </div>
             </div>
           </div>

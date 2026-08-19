@@ -1,5 +1,6 @@
 import { Download, Play, Trophy } from "lucide-react";
 import heroIso from "@/assets/hero-iso.webp";
+import heroIsoAvif from "@/assets/hero-iso.avif";
 import { useI18n } from "@/lib/i18n";
 
 export function Hero() {
@@ -75,7 +76,9 @@ export function Hero() {
 
         {/* Right Column: 3D Isometric Art */}
         <div style={{ animationDelay: "0.1s" }} className="enter-up relative">
-          <img
+          <picture>
+            <source type="image/avif" srcSet={heroIsoAvif} />
+            <img
             src={heroIso}
             alt="Mostafa Samir Full Stack Engineer Workspace"
             width={1200}
@@ -85,7 +88,8 @@ export function Hero() {
             fetchPriority="high"
             draggable={false}
             className="mx-auto w-full max-w-xl md:max-w-2xl animate-float drop-shadow-2xl"
-          />
+            />
+          </picture>
         </div>
       </div>
     </section>
