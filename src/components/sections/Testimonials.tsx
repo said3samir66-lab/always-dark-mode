@@ -168,7 +168,7 @@ export function Testimonials() {
                   award). All frames stay mounted and cross-fade with transform+opacity
                   only. Each Lottie is lazily fetched near the viewport, pauses offscreen
                   and falls back to the static still under reduced motion. */}
-              <div className="mb-8 relative w-full max-w-[11rem] sm:max-w-[13rem] lg:max-w-[15rem] overflow-hidden rounded-2xl border border-border bg-foreground/5 [contain:paint]">
+              <div className="mb-8 relative w-full overflow-hidden rounded-2xl border border-border bg-foreground/5 [contain:paint]">
                 <div className="relative aspect-[4/5] w-full">
                   {SLIDE_VISUALS.map((visual, i) => {
                     const isActive = i === activeIdx % SLIDE_VISUALS.length;
