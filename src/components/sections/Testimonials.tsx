@@ -213,8 +213,8 @@ export function Testimonials() {
           </AnimatePresence>
 
           {/* Row 2, col 1-4: Lottie visual */}
-          <div className="lg:col-span-4 relative w-full overflow-hidden rounded-2xl border border-border bg-foreground/5 [contain:paint]">
-            <div className="relative aspect-[4/5] w-full">
+          <div className="lg:col-span-4 lg:self-start relative w-full overflow-hidden rounded-2xl border border-border bg-foreground/5 [contain:paint]">
+            <div className="relative aspect-[4/5] lg:aspect-[5/4] w-full">
               {SLIDE_VISUALS.map((visual, i) => {
                 const isActive = i === activeIdx % SLIDE_VISUALS.length;
                 const offset = reduce ? 0 : dir * 56;
