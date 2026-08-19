@@ -193,12 +193,12 @@ export function Testimonials() {
                               }
                         }
                         style={{ zIndex: isActive ? 1 : 0, willChange: "transform, opacity" }}
-                        className="absolute inset-0 grid size-full place-items-center p-5 [backface-visibility:hidden] [transform:translateZ(0)]"
+                        className="absolute inset-0 grid size-full place-items-center p-0 [backface-visibility:hidden] [transform:translateZ(0)]"
                       >
                         <LottieIcon
                           src={visual.lottie}
                           eager={i === 0}
-                          className="size-full max-h-full"
+                          className="w-full h-full scale-110"
                           fallback={
                             <img
                               src={visual.still}
