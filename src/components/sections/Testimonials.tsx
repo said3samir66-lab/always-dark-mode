@@ -93,7 +93,7 @@ export function Testimonials() {
       }}
     >
       <div className="mx-auto max-w-6xl">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 lg:items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 lg:items-stretch">
           {/* Left Column: Title & Controls */}
           <div className="lg:col-span-4 flex min-w-0 flex-col justify-between gap-8 h-full">
 
