@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useI18n } from "@/lib/i18n";
 import { credentials, type CredentialItem } from "@/data";
+import { LottieIcon } from "@/components/ui/LottieIcon";
 import {
   ChevronLeft,
   ChevronRight,
@@ -19,7 +20,11 @@ import cred1 from "@/assets/cred-1.avif";
 import cred2 from "@/assets/cred-2.avif";
 import cred3 from "@/assets/cred-3.avif";
 
-const SLIDE_IMAGES = [cred1, cred2, cred3];
+const SLIDE_VISUALS = [
+  { lottie: "/lottie/cred-education.lottie", still: cred1 },
+  { lottie: "/lottie/cred-certification.lottie", still: cred2 },
+  { lottie: "/lottie/cred-award.lottie", still: cred3 },
+] as const;
 const ICONS = [Award, Compass, ShieldCheck, Rocket, Database, Container, Languages];
 const EASE = [0.22, 1, 0.36, 1] as const;
 const AUTOPLAY_MS = 7000;
@@ -166,7 +171,7 @@ export function Testimonials() {
               <div className="mb-8 relative w-full max-w-[11rem] sm:max-w-[13rem] lg:max-w-[15rem] overflow-hidden rounded-2xl border border-border bg-foreground/5 [contain:paint]">
                 <div className="relative aspect-[4/5] w-full">
                   {SLIDE_VISUALS.map((visual, i) => {
-                    const isActive = i === SLIDE_VISUALS.length ? false : i === activeIdx % SLIDE_VISUALS.length;
+                    const isActive = i === activeIdx % SLIDE_VISUALS.length;
                     const offset = reduce ? 0 : dir * 56;
                     return (
                       <motion.div
